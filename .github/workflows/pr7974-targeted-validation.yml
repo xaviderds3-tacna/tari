@@ -1,0 +1,31 @@
+name: "PR 7974 targeted validation"
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_HTTP_MULTIPLEXING: false
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: 0
+
+jobs:
+  targeted-test:
+    name: excluded commitments regression tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: checkout
+        uses: actions/checkout@v7
+      - name: toolchain
+        uses: dtolnay/rust-toolchain@stable
+      - name: ubuntu dependencies
+        run: |
+          sudo apt-get update
+          sudo bash scripts/install_ubuntu_dependencies.sh
+      - name: cache cargo files and outputs
+        uses: Swatinem/rust-cache@v2
+      - name: run focused regression tests
+        run: cargo test --locked -p minotari_console_wallet parse_excluded_commitments -- --nocapture
