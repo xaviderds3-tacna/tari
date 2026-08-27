@@ -298,7 +298,7 @@ impl<B: BlockchainBackend + 'static> BaseNodeWalletService for BaseNodeWalletRpc
         }
 
         let mut responses: Vec<TxQueryBatchResponse> = Vec::with_capacity(message.sigs.len());
-        let mut cached_responses = HashMap::new();
+        let mut cached_responses: HashMap<CompressedSignature, TxQueryResponse> = HashMap::new();
 
         let metadata = self
             .db
