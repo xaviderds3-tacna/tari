@@ -1,6 +1,6 @@
 name: "PR 7974 targeted validation"
 
-on:
+"on":
   workflow_dispatch:
 
 permissions:
